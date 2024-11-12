@@ -1,0 +1,13 @@
+app:
+  name: backend
+  port: :5000
+
+database:
+  dsn: root:password@tcp(127.0.0.1:3306)/hezhu?charset=utf8mb4&parseTime=True&loc=Local
+  MaxIdleConns: 11
+  MaxOpenCons: 114
+
+redis:
+  addr: localhost:6379
+  DB: 0
+  Password: ""
