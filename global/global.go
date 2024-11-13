@@ -6,5 +6,5 @@ import (
 
 var (
 	// Logger *logrus.Logger
-	DB *gorm.DB
+	Db *gorm.DB
 )
