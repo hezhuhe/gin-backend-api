@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"backend/models"
+	"backend/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,4 +16,13 @@ func Register(ctx *gin.Context) {
 		})
 		return
 	}
+	hashedPwd, err := utils.HashPasswoerd(user.PassWoord)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err,
+		})
+	}
+
+	user.PassWoord = hashedPwd
 }
