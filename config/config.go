@@ -8,8 +8,9 @@ import (
 
 type Config struct {
 	App struct {
-		Name string
-		Port string
+		Name      string
+		JwtSecret string
+		Port      string
 	}
 	DataBase struct {
 		DSN          string

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"backend/config"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -13,11 +14,17 @@ func HashPasswoerd(pwd string) (string, error) {
 }
 
 func GenerateJWT(username string) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
 		"exp":      time.Now().Add(time.Hour * 72).Unix(),
 	})
-	signedtoken, err := token.SignedString([]byte("secret"))
+
+	signedtoken, err := token.SignedString([]byte(config.AppConfig.App.JwtSecret))
 
 	return "Bearer " + signedtoken, err
+}
+
+func CheckPassword(pwd, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pwd))
+	return err == nil
 }

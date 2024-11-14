@@ -1,5 +1,6 @@
 app:
   name: backend
+  jwtSecret: "usSvZYhX+seDaZplRGG1jbMcz7tS3bMTFaqVbyXCWyA="
   port: :5000
 
 database:

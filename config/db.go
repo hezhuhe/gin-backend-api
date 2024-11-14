@@ -32,5 +32,5 @@ func InitDB() {
 		log.Fatalf("failed to configure database,error:%v", err)
 	}
 
-	global.DB = db
+	global.Db = db
 }
