@@ -66,10 +66,11 @@ func Login(ctx *gin.Context) {
 	}
 	var user models.User
 
-	if err := global.Db.Where("username=?", input.Username).First(&user); err != nil {
+	if err := global.Db.Where("username = ?", input.Username).First(&user).Error; err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"error": "error username or password",
 		})
+		return
 	}
 
 	if !utils.CheckPassword(input.Password, user.PassWord) {
