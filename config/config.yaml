@@ -9,6 +9,6 @@ database:
   MaxOpenCons: 114
 
 redis:
-  addr: localhost:6379
+  addr: 10.22.7.14:33007
   DB: 0
-  Password: ""
+  Password: "redispass_evliftctrl"

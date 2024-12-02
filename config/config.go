@@ -43,6 +43,8 @@ func InitConfig() {
 	// fmt.Printf("struct:%v", AppConfig)
 
 	// initialzation database
-	InitDB()
+	initDB()
+
+	initRedis()
 
 }

@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitDB() {
+func initDB() {
 	// 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
 	dsn := AppConfig.DataBase.DSN
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -33,4 +33,5 @@ func InitDB() {
 	}
 
 	global.Db = db
+	log.Println("mysql initialized successfully")
 }

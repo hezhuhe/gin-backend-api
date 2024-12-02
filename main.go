@@ -3,32 +3,46 @@ package main
 import (
 	"backend/config"
 	"backend/router"
-
-	"github.com/gin-gonic/gin"
+	"context"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
 )
 
 func main() {
 	config.InitConfig()
-	// fmt.Println(config.AppConfig.App.Name)
-	// fmt.Println(config.AppConfig.App.Port)
-	type SuccessRespons struct {
-		Code int
-		Msg  string
-	}
-	infoTest := SuccessRespons{
-		Code: 200,
-		Msg:  "success",
-	}
-	r := router.SetupRouter()
-	// r.GET("/ping", func(c *gin.Context) {
-	// 	c.JSON(200, gin.H{
-	// 		"message": "pong",
-	// 	})
-	// })
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, infoTest)
-	})
 
-	// addr := "10.22.40.90" + config.AppConfig.App.Port
-	r.Run(config.AppConfig.App.Port) // 监听并在 0.0.0.0:8080 上启动服务
+	r := router.SetupRouter()
+
+	port := config.AppConfig.App.Port
+
+	if port == "" {
+		port = ":8080"
+	}
+
+	srv := &http.Server{
+		Addr:    port,
+		Handler: r,
+	}
+
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	log.Println("Shutdown Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	log.Println("Server exiting")
+
 }
