@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"backend/global"
-	"backend/models"
+	"gin-backend-api/global"
+	"gin-backend-api/models"
 	"net/http"
 	"time"
 

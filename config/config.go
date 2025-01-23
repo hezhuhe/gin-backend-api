@@ -43,8 +43,12 @@ func InitConfig() {
 	// fmt.Printf("struct:%v", AppConfig)
 
 	// initialzation database
-	initDB()
+	InitDB()
 
-	initRedis()
+	InitRedis()
 
+	InitCasbin()
+
+	// 初始化基础数据
+	// controllers.initAdminData
 }

@@ -1,14 +1,14 @@
 package config
 
 import (
-	"backend/global"
 	"context"
+	"gin-backend-api/global"
 	"log"
 
 	"github.com/go-redis/redis/v8"
 )
 
-func initRedis() {
+func InitRedis() {
 	addr := AppConfig.Redis.Addr
 	db := AppConfig.Redis.DB
 	password := AppConfig.Redis.Password

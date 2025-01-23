@@ -1,15 +1,39 @@
 package utils
 
 import (
-	"backend/config"
 	"errors"
+	"gin-backend-api/config"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func HashPasswoerd(pwd string) (string, error) {
+type Response struct {
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data,omitempty"`
+}
+
+// 返回成功的响应
+func Success(c *gin.Context, data interface{}, message string) {
+	c.JSON(200, Response{
+		Code:    0,
+		Message: message,
+		Data:    data,
+	})
+}
+
+// 返回失败的响应
+func Error(c *gin.Context, code int, message string) {
+	c.JSON(code, Response{
+		Code:    code,
+		Message: message,
+	})
+}
+
+func HashPassword(pwd string) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(pwd), 12)
 	return string(hash), err
 }

@@ -1,5 +1,5 @@
 app:
-  name: backend
+  name: gin-backend-api
   jwtSecret: "usSvZYhX+seDaZplRGG1jbMcz7tS3bMTFaqVbyXCWyA="
   port: :5000
 

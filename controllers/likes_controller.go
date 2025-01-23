@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"backend/global"
+	"gin-backend-api/global"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

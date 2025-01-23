@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"backend/global"
-	"backend/models"
 	"encoding/json"
 	"errors"
+	"gin-backend-api/global"
+	"gin-backend-api/models"
 	"net/http"
 	"time"
 

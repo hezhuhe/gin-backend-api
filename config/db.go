@@ -1,7 +1,8 @@
 package config
 
 import (
-	"backend/global"
+	"gin-backend-api/global"
+	"gin-backend-api/models"
 	"log"
 	"time"
 
@@ -9,29 +10,39 @@ import (
 	"gorm.io/gorm"
 )
 
-func initDB() {
-	// 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
+func InitDB() {
+	// 初始化数据库连接
 	dsn := AppConfig.DataBase.DSN
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("error initialize database, error:%v", err)
+		log.Fatalf("Error initializing database: %v", err)
 	}
 
 	sqlDB, err := db.DB()
+	if err != nil {
+		log.Fatalf("Error configuring database connection pool: %v", err)
+	}
 
-	// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
+	// 配置连接池参数
 	sqlDB.SetMaxIdleConns(AppConfig.DataBase.MaxIdleConns)
-
-	// SetMaxOpenConns 设置打开数据库连接的最大数量。
 	sqlDB.SetMaxOpenConns(AppConfig.DataBase.MaxOpenCons)
-
-	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	if err != nil {
-		log.Fatalf("failed to configure database,error:%v", err)
+	// 初始化表结构
+	if err := autoMigrateTables(db); err != nil {
+		log.Fatalf("Error migrating tables: %v", err)
 	}
 
 	global.Db = db
-	log.Println("mysql initialized successfully")
+	log.Println("MySQL initialized successfully")
+
+}
+
+// 自动迁移表结构
+func autoMigrateTables(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&models.Sys_User{},
+		&models.SysRole{},
+		&models.SysPermission{},
+	)
 }

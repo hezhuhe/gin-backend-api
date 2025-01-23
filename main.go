@@ -1,9 +1,9 @@
 package main
 
 import (
-	"backend/config"
-	"backend/router"
 	"context"
+	"gin-backend-api/config"
+	"gin-backend-api/router"
 	"log"
 	"net/http"
 	"os"
